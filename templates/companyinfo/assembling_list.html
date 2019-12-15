@@ -1,0 +1,18 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Assembling List
+{% endblock %}
+
+{% block content %}
+    <h2>Assembling List</h2>
+    <ul>
+        {% for assembling in assembling_list %}
+            <li>
+                <a href="">{{ assembling }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no assembling available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

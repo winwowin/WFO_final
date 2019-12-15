@@ -1,0 +1,23 @@
+assembling,     instructor
+assembling_list
+Assembling
+
+product,    section
+product_list
+Product
+
+part,   course
+part_list
+Part
+
+supplier,   semester
+supplier_list
+Supplier
+
+coordinator,    student
+coordinator_list
+Coordinator
+
+product_coordinator,    registration
+product_coordinator_list
+Product_coordinator

@@ -1,0 +1,18 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Supplier List
+{% endblock %}
+
+{% block content %}
+    <h2>Supplier List</h2>
+    <ul>
+        {% for supplier in supplier_list %}
+            <li>
+                <a href="">{{ supplier }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no supplier available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

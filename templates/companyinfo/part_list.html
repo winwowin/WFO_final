@@ -1,0 +1,18 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Part List
+{% endblock %}
+
+{% block content %}
+    <h2>Part List</h2>
+    <ul>
+        {% for part in part_list %}
+            <li>
+                <a href="">{{ part }}</a>
+            </li>
+        {% empty %}
+            <li><em>There are currently no part available.</em></li>
+        {% endfor %}
+    </ul>
+{% endblock %}
