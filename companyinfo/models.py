@@ -75,7 +75,7 @@ class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
     product_name = models.CharField(max_length=10)
     supplier = models.ForeignKey(Supplier, related_name='product', on_delete=models.PROTECT)
-    part = models.ForeignKey(Part, related_name='product', on_delete=models.PROTECT)
+    part = models.ForeignKey(Part, related_name='product', on_delete=models.PROTECT,null=True)
     # assembling = models.ForeignKey(Assembling, related_name='product', on_delete=models.PROTECT)
 
     def __str__(self):
