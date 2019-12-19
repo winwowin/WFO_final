@@ -4,15 +4,31 @@
     Product_coordinator List
 {% endblock %}
 
+{#{% block create_button %}#}
+{#    {% if perms.companyinfo2.add_coordinator %}#}
+{#      <a href="{% url 'companyinfo_product_coordinator_create_urlpattern' %}"#}
+{#         class="button button-primary">#}
+{#        Create New Product_coordinator</a>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
 {% block content %}
-    <h2>Product_coordinator List</h2>
+{#{% block org_content %}#}
+  <h2>Product Coordinator List</h2>
+{#    {% if perms.companyinfo2.add_coordinator %}#}
+    <div class="mobile">
+      <a href="{% url 'companyinfo_product_coordinator_create_urlpattern' %}"
+         class="button button-primary">
+        Create New Product_coordinator</a>
+    </div>
+{#    {% endif %}#}
     <ul>
         {% for product_coordinator in product_coordinator_list %}
             <li>
-                <a href="">{{ product_coordinator }}</a>
+                <a href="{{ product_coordinator.get_absolute_url }}">{{ product_coordinator }}</a>
             </li>
         {% empty %}
-            <li><em>There are currently no product_coordinator available.</em></li>
+            <li><em>There are currently no product_coordinators available.</em></li>
         {% endfor %}
     </ul>
 {% endblock %}

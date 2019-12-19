@@ -1,0 +1,15 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Update Coordinator
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ coordinator.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Coordinator</button>
+    </form>
+{% endblock %}

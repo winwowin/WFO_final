@@ -1,0 +1,26 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Error Deleting Assembling
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Assembling</h2>
+        <p>
+            You may not delete assembling {{ assembling }}.  This
+            assembling is currently assigned to the following
+            products:
+        </p>
+
+        <ul>
+            {% for product in products %}
+            <li><a href="{{ product.get_absolute_url }}">{{ product }}</a></li>
+            {%  endfor %}
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'companyinfo_assembling_list_urlpattern' %}">Assembling List</a>.
+        </p>
+    </div>
+{% endblock %}

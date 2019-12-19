@@ -1,23 +1,31 @@
 assembling,     instructor
 assembling_list
-Assembling
+Assembling      Instructor
+first_name      assembling_code
+last_name       assembling_line
 
 product,    section
 product_list
-Product
+Product     Section
 
 part,   course
 part_list
-Part
+Part    Course
 
 supplier,   semester
 supplier_list
-Supplier
+Supplier    Semester
 
 coordinator,    student
 coordinator_list
-Coordinator
+Coordinator     Student
 
 product_coordinator,    registration
 product_coordinator_list
-Product_coordinator
+Product_coordinator     Registration
+ProductCoordinator
+
+
+
+tier, period
+Tier, Period

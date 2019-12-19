@@ -1,0 +1,15 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Update Part
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ part.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Part</button>
+    </form>
+{% endblock %}

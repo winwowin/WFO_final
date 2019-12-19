@@ -1,0 +1,15 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Create Part
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{% url 'companyinfo_part_create_urlpattern'%}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Part</button>
+    </form>
+{% endblock %}

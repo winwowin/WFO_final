@@ -4,15 +4,34 @@
     Supplier List
 {% endblock %}
 
+{#{% block create_button %}#}
+{#    {% if perms.companyinfo2.add_supplier %}#}
+{#        <a#}
+{#                href="{% url 'companyinfo_supplier_create_urlpattern' %}"#}
+{#                class="button button-primary">#}
+{#            Create New Supplier</a>#}
+{#    {% endif %}#}
+{#{% endblock %}#}
+
 {% block content %}
+{#{% block org_content %}#}
     <h2>Supplier List</h2>
+{#    {% if perms.companyinfo2.add_supplier %}#}
+        <div class="mobile">
+            <a
+                    href="{% url 'companyinfo_supplier_create_urlpattern' %}"
+                    class="button button-primary">
+                Create New Supplier</a>
+        </div>
+{#    {% endif %}#}
     <ul>
         {% for supplier in supplier_list %}
             <li>
-                <a href="">{{ supplier }}</a>
+                <a href="{{ supplier.get_absolute_url }}">
+                    {{ supplier }}</a>
             </li>
         {% empty %}
-            <li><em>There are currently no supplier available.</em></li>
+            <li><em>There are currently no suppliers available.</em></li>
         {% endfor %}
     </ul>
 {% endblock %}

@@ -1,0 +1,15 @@
+{% extends 'companyinfo/base.html' %}
+
+{% block title %}
+    Update Assembling
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ assembling.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Assembling</button>
+    </form>
+{% endblock %}

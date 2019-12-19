@@ -24,24 +24,49 @@
     </header>
     <nav>
         <ul>
-            <li>
-                <a href="">
-                    Assembling</a></li>
-            <li>
-                <a href="">
-                    Product</a></li>
-            <li>
-                <a href="">
-                    Part</a></li>
-            <li>
-                <a href="">
-                    Supplier</a></li>
-            <li>
-                <a href="">
-                    Coordinator</a></li>
-            <li>
-                <a href="">
-                    Product_coordinator</a></li>
+{#            {% if perms.companyinfo2.view_assembling %}#}
+                <li>
+                    <a href="{% url 'companyinfo_assembling_list_urlpattern' %}">
+                        Assemblings</a></li>
+{#            {% endif %}#}
+
+{#            {% if perms.companyinfo2.view_product %}#}
+                <li>
+                    <a href="{% url 'companyinfo_product_list_urlpattern' %}">
+                        Products</a></li>
+{#            {% endif %}#}
+
+{#            {% if perms.companyinfo2.view_part %}#}
+                <li>
+                    <a href="{% url 'companyinfo_part_list_urlpattern' %}">
+                        Parts</a></li>
+{#            {% endif %}#}
+
+{#            {% if perms.companyinfo2.view_supplier %}#}
+                <li>
+                    <a href="{% url 'companyinfo_supplier_list_urlpattern' %}">
+                        Suppliers</a></li>
+{#            {% endif %}#}
+
+
+{#            {% if perms.companyinfo2.view_coordinator %}#}
+                <li>
+                    <a href="{% url 'companyinfo_coordinator_list_urlpattern' %}">
+                        Coordinators</a></li>
+{#            {% endif %}#}
+
+
+{#            {% if perms.companyinfo2.view_product_coordinator %}#}
+                <li>
+                    <a href="{% url 'companyinfo_product_coordinator_list_urlpattern' %}">
+                        Product_coordinators</a></li>
+{#            {% endif %}#}
+
+
+{#            <li>#}
+{#                <a href="{% url 'about_urlpattern' %}">#}
+{#                    About</a></li>#}
+
         </ul>
     </nav>
     <main>
