@@ -27,7 +27,7 @@ SECRET_KEY = 'hrofn)vjqq0qlatsd=j8ha)f5g7u*e+b-$-2r^a6pu!uyapb#f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['http://winwowin.pythonanywhere.com/']
+ALLOWED_HOSTS = ['winwowin.pythonanywhere.com']
 
 
 # Application definition
