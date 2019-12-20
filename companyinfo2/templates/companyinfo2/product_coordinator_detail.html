@@ -1,0 +1,42 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Product_coordinator - {{ product_coordinator }}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div class="row">
+  <div class="offset-by-two eight columns">
+    <h2>{{ coordinator }}</h2>
+    <ul class="inline">
+        {% if perms.companyinfo2.change_coordinator %}
+        <li>
+          <a href="{{ product_coordinator.get_update_url }}"
+          class="button">
+            Edit Product_coordinator</a></li>
+        {% endif %}
+        {% if perms.companyinfo2.delete_coordinator %}
+        <li>
+          <a href="{{ product_coordinator.get_delete_url }}"
+          class="button">
+            Delete Product_coordinator</a></li>
+        {% endif %}
+    </ul>
+    <section>
+        <table>
+            <tr>
+                <th>Coordinator:</th>
+                <td><a href="{{ coordinator.get_absolute_url }}">{{ coordinator }}</a></td>
+            </tr>
+            <tr>
+                <th>Product:</th>
+                <td><a href="{{ product.get_absolute_url }}">{{ product }}</a></td>
+            </tr>
+        </table>
+    </section>
+
+  </div></div> <!-- row -->
+
+</article>
+{% endblock %}

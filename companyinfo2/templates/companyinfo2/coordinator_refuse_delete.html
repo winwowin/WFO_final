@@ -1,0 +1,26 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Error Deleting Coordinator
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Coordinator</h2>
+        <p>
+            You may not delete coordinator {{ coordinator }}.  This
+            coordinator is currently registered in the following
+            products:
+        </p>
+
+        <ul>
+            {% for product_coordinator in product_coordinators %}
+            <li><a href="{{ product_coordinator.get_absolute_url }}">{{ product_coordinator.product }}</a></li>
+            {%  endfor %}
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'companyinfo2_coordinator_list_urlpattern' %}">Coordinator List</a>.
+        </p>
+    </div>
+{% endblock %}

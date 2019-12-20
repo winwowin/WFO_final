@@ -1,0 +1,19 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Delete Coordinator
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ coordinator.get_delete_url }}"
+        method="post">
+        {% csrf_token %}
+        <p>
+            Are you sure that you want to delete
+            coordinator {{ coordinator }}?
+        </p>
+        <a href="{{ coordinator.get_absolute_url }}">Cancel</a>
+        <button type="submit">Delete Coordinator</button>
+    </form>
+{% endblock %}

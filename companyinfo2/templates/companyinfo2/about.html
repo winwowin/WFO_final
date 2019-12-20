@@ -1,0 +1,26 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    About
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="offset-by-two eight columns">
+    <h2>About</h2>
+    <p>The EZ Company is a full-featured Web-based demonstration application
+        for the creation and maintenance of a simplified company system database. This
+        application is implemented using <a href="https://www.djangoproject.com">Django</a>.</p><br>
+        <p>You are now in the customer module. To view the full system management functions, please log in using
+            superuser credential.</p>
+        <p>Log-in id: tester<br>Password: (secret)</p>
+        <p>Authenticated employee roles IDs, all with the same password: (secret):
+        <li>accountant</li>
+        <li>hr</li>
+        <li>md</li>
+        <li>researcher</li>
+        <li>sys_admin</li>
+        <li>worker</li></p>
+    </div>
+  </div>
+{% endblock %}

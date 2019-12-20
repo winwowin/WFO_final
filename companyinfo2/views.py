@@ -1,8 +1,12 @@
+# from msilib.schema import ListView
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.http.response import HttpResponse
 from django.template import loader
+from django.urls import reverse_lazy
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 
-from companyinfo2.utils import ObjectCreateMixin
+from companyinfo2.utils import ObjectCreateMixin, PageLinksMixin
 from .models import (Supplier, Product, Part, Assembling, Product_coordinator, Coordinator)
 
 
@@ -22,17 +26,14 @@ from .models import (
 )
 
 
-class AssemblingList(View):
-
-    def get(self, request):
-        return render(
-            request,
-            'companyinfo/assembling_list.html',
-            {'assembling_list': Assembling.objects.all()}
-        )
+# class AssemblingList(LoginRequiredMixin, PermissionRequiredMixin, PageLinksMixin, ListView):
+class AssemblingList(PageLinksMixin, ListView):
+    paginate_by = 5
+    model = Assembling
 
 
-class AssemblingDetail(View):
+class AssemblingDetail(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    permission_required = 'companyinfo2.view_assembling'
 
     def get(self, request, pk):
         assembling = get_object_or_404(
@@ -42,34 +43,41 @@ class AssemblingDetail(View):
         product_list = assembling.products.all()
         return render(
             request,
-            'companyinfo/assembling_detail.html',
+            'companyinfo2/assembling_detail.html',
             {'assembling': assembling, 'product_list': product_list}
         )
 
 
-# class AssemblingCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class AssemblingCreate(ObjectCreateMixin, View):
+# class AssemblingCreate(CreateView):
+class AssemblingCreate(LoginRequiredMixin,PermissionRequiredMixin, CreateView):
     form_class = AssemblingForm
-    template_name = 'companyinfo2/assembling_form.html'
-    # model = Assembling
-    # permission_required = 'companyinfo2.add_assembling'
+    # template_name = 'companyinfo2/assembling_form.html'
+    model = Assembling
+    permission_required = 'companyinfo2.add_assembling'
 
 
-class ProductList(View):
-# class ProductList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-#     model = Product
-#     permission_required = 'companyinfo2.view_product'
-    def get(self, request):
-        return render(
-            request,
-            'companyinfo/product_list.html',
-            {'product_list': Product.objects.all()}
-        )
+# class ProductList(View):
+# # class ProductList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+# #     model = Product
+# #     permission_required = 'companyinfo2.view_product'
+#     def get(self, request):
+#         return render(
+#             request,
+#             'companyinfo2/product_list.html',
+#             {'product_list': Product.objects.all()}
+#         )
 
 
-class ProductDetail(View):
-# class ProductDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.view_product'
+# class ProductList(View):
+# class ProductList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+class ProductList(ListView):
+        model = Product
+
+
+# class ProductDetail(View):
+class ProductDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.view_product'
+
     def get(self, request, pk):
         product = get_object_or_404(
             Product,
@@ -81,7 +89,7 @@ class ProductDetail(View):
         product_coordinator_list = product.product_coordinators.all()
         return render(
             request,
-            'companyinfo/product_detail.html',
+            'companyinfo2/product_detail.html',
             {'product': product,
              'supplier': supplier,
              'part': part,
@@ -90,62 +98,62 @@ class ProductDetail(View):
         )
 
 
-# class ProductCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class ProductCreate(ObjectCreateMixin, View):
+class ProductCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+# class ProductCreate(ObjectCreateMixin, View):
     form_class = ProductForm
-    template_name = 'companyinfo2/product_form.html'
+#     template_name = 'companyinfo2/product_form.html'
     #
-    # model = Product
-    # permission_required = 'companyinfo2.add_product'
+    model = Product
+    permission_required = 'companyinfo2.add_product'
 
 
-# class ProductUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
-#     form_class = ProductForm
-#     model = Product
-#     template_name = 'companyinfo2/product_form_update.html'
-#     permission_required = 'companyinfo2.change_product'
-
-class ProductUpdate(View):
+class ProductUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     form_class = ProductForm
     model = Product
     template_name = 'companyinfo2/product_form_update.html'
+    permission_required = 'companyinfo2.change_product'
 
-    def get_object(self, pk):
-        return get_object_or_404(
-            self.model,
-            pk=pk)
+# class ProductUpdate(View):
+#     form_class = ProductForm
+#     model = Product
+#     template_name = 'companyinfo2/product_form_update.html'
+#
+#     def get_object(self, pk):
+#         return get_object_or_404(
+#             self.model,
+#             pk=pk)
+#
+#     def get(self, request, pk):
+#         product = self.get_object(pk)
+#         context = {
+#             'form': self.form_class(
+#                 instance=product),
+#             'product': product,
+#         }
+#         return render(
+#             request, self.template_name, context)
+#
+#     def post(self, request, pk):
+#         product = self.get_object(pk)
+#         bound_form = self.form_class(
+#             request.POST, instance=product)
+#         if bound_form.is_valid():
+#             new_product = bound_form.save()
+#             return redirect(new_product)
+#         else:
+#             context = {
+#                 'form': bound_form,
+#                 'product': product,
+#             }
+#             return render(
+#                 request,
+#                 self.template_name,
+#                 context)
 
-    def get(self, request, pk):
-        product = self.get_object(pk)
-        context = {
-            'form': self.form_class(
-                instance=product),
-            'product': product,
-        }
-        return render(
-            request, self.template_name, context)
 
-    def post(self, request, pk):
-        product = self.get_object(pk)
-        bound_form = self.form_class(
-            request.POST, instance=product)
-        if bound_form.is_valid():
-            new_product = bound_form.save()
-            return redirect(new_product)
-        else:
-            context = {
-                'form': bound_form,
-                'product': product,
-            }
-            return render(
-                request,
-                self.template_name,
-                context)
-
-
-class ProductDelete(View):
-# class ProductDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.delete_product'
+# class ProductDelete(View):
+class ProductDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.delete_product'
 
     def get(self, request, pk):
         product = self.get_object(pk)
@@ -153,7 +161,7 @@ class ProductDelete(View):
         if product_coordinators.count() > 0:
             return render(
                 request,
-                'companyinfo/product_refuse_delete.html',
+                'companyinfo2/product_refuse_delete.html',
                 {'product': product,
                  'product_coordinators': product_coordinators,
                  }
@@ -161,7 +169,7 @@ class ProductDelete(View):
         else:
             return render(
                 request,
-                'companyinfo/product_confirm_delete.html',
+                'companyinfo2/product_confirm_delete.html',
                 {'product': product}
             )
 
@@ -173,26 +181,28 @@ class ProductDelete(View):
     def post(self, request, pk):
         product = self.get_object(pk)
         product.delete()
-        return redirect('companyinfo_product_list_urlpattern')
+        return redirect('companyinfo2_product_list_urlpattern')
 
 
 
 
-class PartList(View):
-# class PartList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-#     model = Part
-#     permission_required = 'companyinfo2.view_part'
-    def get(self, request):
-        return render(
-            request,
-            'companyinfo/part_list.html',
-            {'part_list': Part.objects.all()}
-        )
+# class PartList(View):
+class PartList(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Part
+    permission_required = 'companyinfo2.view_part'
+
+    # def get(self, request):
+    #     return render(
+    #         request,
+    #         'companyinfo2/part_list.html',
+    #         {'part_list': Part.objects.all()}
+    #     )
 
 
-class PartDetail(View):
-# class PartDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.view_part'
+# class PartDetail(View):
+class PartDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.view_part'
+
     def get(self, request, pk):
         part = get_object_or_404(
             Part,
@@ -201,64 +211,62 @@ class PartDetail(View):
         product_list = part.products.all()
         return render(
             request,
-            'companyinfo/part_detail.html',
+            'companyinfo2/part_detail.html',
             {'part': part, 'product_list': product_list}
         )
 
 
-# class PartCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class PartCreate(ObjectCreateMixin, View):
+class PartCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+# class PartCreate(ObjectCreateMixin, View):
     form_class = PartForm
-    template_name = 'companyinfo2/part_form.html'
-    # model = Part
-    # permission_required = 'companyinfo2.add_part'
+#     template_name = 'companyinfo2/part_form.html'
+    model = Part
+    permission_required = 'companyinfo2.add_part'
 
 
-class PartUpdate(View):
-# class PartUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+# class PartUpdate(View):
+class PartUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     form_class = PartForm
     model = Part
     template_name = 'companyinfo2/part_form_update.html'
-    # permission_required = 'companyinfo2.change_part'
+    permission_required = 'companyinfo2.change_part'
+    
+    # def get_object(self, pk):
+    #     return get_object_or_404(
+    #         self.model,
+    #         pk=pk)
+    #
+    # def get(self, request, pk):
+    #     part = self.get_object(pk)
+    #     context = {
+    #         'form': self.form_class(
+    #             instance=part),
+    #         'part': part,
+    #     }
+    #     return render(
+    #         request, self.template_name, context)
+    #
+    # def post(self, request, pk):
+    #     part = self.get_object(pk)
+    #     bound_form = self.form_class(
+    #         request.POST, instance=part)
+    #     if bound_form.is_valid():
+    #         new_part = bound_form.save()
+    #         return redirect(new_part)
+    #     else:
+    #         context = {
+    #             'form': bound_form,
+    #             'part': part,
+    #         }
+    #         return render(
+    #             request,
+    #             self.template_name,
+    #             context)
 
-    
-    def get_object(self, pk):
-        return get_object_or_404(
-            self.model,
-            pk=pk)
-    
-    
-    def get(self, request, pk):
-        part = self.get_object(pk)
-        context = {
-            'form': self.form_class(
-                instance=part),
-            'part': part,
-        }
-        return render(
-            request, self.template_name, context)
-    
-    
-    def post(self, request, pk):
-        part = self.get_object(pk)
-        bound_form = self.form_class(
-            request.POST, instance=part)
-        if bound_form.is_valid():
-            new_part = bound_form.save()
-            return redirect(new_part)
-        else:
-            context = {
-                'form': bound_form,
-                'part': part,
-            }
-            return render(
-                request,
-                self.template_name,
-                context)
 
-class PartDelete(View):
-# class PartDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.delete_part'
+# class PartDelete(View):
+class PartDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.delete_part'
 
     def get(self, request, pk):
         part = self.get_object(pk)
@@ -266,7 +274,7 @@ class PartDelete(View):
         if products.count() > 0:
             return render(
                 request,
-                'companyinfo/part_refuse_delete.html',
+                'companyinfo2/part_refuse_delete.html',
                 {'part': part,
                  'products': products,
                  }
@@ -274,7 +282,7 @@ class PartDelete(View):
         else:
             return render(
                 request,
-                'companyinfo/part_confirm_delete.html',
+                'companyinfo2/part_confirm_delete.html',
                 {'part': part}
             )
 
@@ -288,25 +296,26 @@ class PartDelete(View):
     def post(self, request, pk):
         part = self.get_object(pk)
         part.delete()
-        return redirect('companyinfo_part_list_urlpattern')
+        return redirect('companyinfo2_part_list_urlpattern')
 
 
+# class SupplierList(View):
+class SupplierList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+    model = Supplier
+    permission_required = 'companyinfo2.view_supplier'
 
-class SupplierList(View):
-# class SupplierList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-#     model = Supplier
-#     permission_required = 'companyinfo2.view_supplier'
     def get(self, request):
         return render(
             request,
-            'companyinfo/supplier_list.html',
+            'companyinfo2/supplier_list.html',
             {'supplier_list': Supplier.objects.all()}
         )
 
 
-class SupplierDetail(View):
-# class SupplierDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.view_supplier'
+# class SupplierDetail(View):
+class SupplierDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.view_supplier'
+
     def get(self, request, pk):
         supplier = get_object_or_404(
             Supplier,
@@ -315,66 +324,66 @@ class SupplierDetail(View):
         product_list = supplier.products.all()
         return render(
             request,
-            'companyinfo/supplier_detail.html',
+            'companyinfo2/supplier_detail.html',
             {'supplier': supplier, 'product_list': product_list}
         )
 
 
-# class SupplierCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class SupplierCreate(ObjectCreateMixin, View):
+class SupplierCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+    # class SupplierCreate(ObjectCreateMixin, View):
     form_class = SupplierForm
-    template_name = 'companyinfo2/supplier_form.html'
+    #     template_name = 'companyinfo2/supplier_form.html'
 
-    # model = Supplier
-    # permission_required = 'companyinfo2.add_supplier'
+    model = Supplier
+    permission_required = 'companyinfo2.add_supplier'
 
 
-# class SupplierUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
-#     form_class = SupplierForm
-#     model = Supplier
-#     template_name = 'companyinfo2/supplier_form_update.html'
-#     permission_required = 'companyinfo2.change_supplier'
-
-class SupplierUpdate(View):
+class SupplierUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     form_class = SupplierForm
     model = Supplier
     template_name = 'companyinfo2/supplier_form_update.html'
+    permission_required = 'companyinfo2.change_supplier'
 
-    def get_object(self, pk):
-        return get_object_or_404(
-            self.model,
-            pk=pk)
+# class SupplierUpdate(View):
+#     form_class = SupplierForm
+#     model = Supplier
+#     template_name = 'companyinfo2/supplier_form_update.html'
+#
+#     def get_object(self, pk):
+#         return get_object_or_404(
+#             self.model,
+#             pk=pk)
+#
+#     def get(self, request, pk):
+#         supplier = self.get_object(pk)
+#         context = {
+#             'form': self.form_class(
+#                 instance=supplier),
+#             'supplier': supplier,
+#         }
+#         return render(
+#             request, self.template_name, context)
+#
+#     def post(self, request, pk):
+#         supplier = self.get_object(pk)
+#         bound_form = self.form_class(
+#             request.POST, instance=supplier)
+#         if bound_form.is_valid():
+#             new_supplier = bound_form.save()
+#             return redirect(new_supplier)
+#         else:
+#             context = {
+#                 'form': bound_form,
+#                 'supplier': supplier,
+#             }
+#             return render(
+#                 request,
+#                 self.template_name,
+#                 context)
 
-    def get(self, request, pk):
-        supplier = self.get_object(pk)
-        context = {
-            'form': self.form_class(
-                instance=supplier),
-            'supplier': supplier,
-        }
-        return render(
-            request, self.template_name, context)
 
-    def post(self, request, pk):
-        supplier = self.get_object(pk)
-        bound_form = self.form_class(
-            request.POST, instance=supplier)
-        if bound_form.is_valid():
-            new_supplier = bound_form.save()
-            return redirect(new_supplier)
-        else:
-            context = {
-                'form': bound_form,
-                'supplier': supplier,
-            }
-            return render(
-                request,
-                self.template_name,
-                context)
-        
-
-class SupplierDelete(View):
-# class SupplierDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
+# class SupplierDelete(View):
+class SupplierDelete(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = 'companyinfo2.delete_supplier'
 
     def get(self, request, pk):
@@ -383,7 +392,7 @@ class SupplierDelete(View):
         if products.count() > 0:
             return render(
                 request,
-                'companyinfo/supplier_refuse_delete.html',
+                'companyinfo2/supplier_refuse_delete.html',
                 {'supplier': supplier,
                  'products': products,
                  }
@@ -391,7 +400,7 @@ class SupplierDelete(View):
         else:
             return render(
                 request,
-                'companyinfo/supplier_confirm_delete.html',
+                'companyinfo2/supplier_confirm_delete.html',
                 {'supplier': supplier}
             )
 
@@ -405,26 +414,27 @@ class SupplierDelete(View):
     def post(self, request, pk):
         supplier = self.get_object(pk)
         supplier.delete()
-        return redirect('companyinfo_supplier_list_urlpattern')
+        return redirect('companyinfo2_supplier_list_urlpattern')
 
 
+# class CoordinatorList(View):
+class CoordinatorList(LoginRequiredMixin,PermissionRequiredMixin,PageLinksMixin, ListView):
+    paginate_by = 25
+    model = Coordinator
+    permission_required = 'companyinfo2.view_coordinator'
 
-class CoordinatorList(View):
-# class CoordinatorList(LoginRequiredMixin,PermissionRequiredMixin,PageLinksMixin, ListView):
-#     paginate_by = 25
-#     model = Coordinator
-#     permission_required = 'companyinfo2.view_coordinator'
     def get(self, request):
         return render(
             request,
-            'companyinfo/coordinator_list.html',
+            'companyinfo2/coordinator_list.html',
             {'coordinator_list': Coordinator.objects.all()}
         )
 
 
-class CoordinatorDetail(View):
-# class CoordinatorDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.view_coordinator'
+# class CoordinatorDetail(View):
+class CoordinatorDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.view_coordinator'
+
     def get(self, request, pk):
         coordinator = get_object_or_404(
             Coordinator,
@@ -433,63 +443,63 @@ class CoordinatorDetail(View):
         product_coordinator_list = coordinator.product_coordinators.all()
         return render(
             request,
-            'companyinfo/coordinator_detail.html',
+            'companyinfo2/coordinator_detail.html',
             {'coordinator': coordinator, 'product_coordinator_list': product_coordinator_list}
         )
 
 
-# class CoordinatorCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class CoordinatorCreate(ObjectCreateMixin, View):
+class CoordinatorCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+# class CoordinatorCreate(ObjectCreateMixin, View):
     form_class = CoordinatorForm
-    template_name = 'companyinfo2/coordinator_form.html'
+#     template_name = 'companyinfo2/coordinator_form.html'
 
-    # model = Coordinator
-    # permission_required = 'companyinfo2.add_coordinator'
+    model = Coordinator
+    permission_required = 'companyinfo2.add_coordinator'
 
 
-class CoordinatorUpdate(View):
-# class CoordinatorUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+# class CoordinatorUpdate(View):
+class CoordinatorUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     form_class = CoordinatorForm
     model = Coordinator
     template_name = 'companyinfo2/coordinator_form_update.html'
-    # permission_required = 'companyinfo2.change_coordinator'
+    permission_required = 'companyinfo2.change_coordinator'
 
-    def get_object(self, pk):
-        return get_object_or_404(
-            self.model,
-            pk=pk)
-    
-    def get(self, request, pk):
-        coordinator = self.get_object(pk)
-        context = {
-            'form': self.form_class(
-                instance=coordinator),
-            'coordinator': coordinator,
-        }
-        return render(
-            request, self.template_name, context)
-    
-    def post(self, request, pk):
-        coordinator = self.get_object(pk)
-        bound_form = self.form_class(
-            request.POST, instance=coordinator)
-        if bound_form.is_valid():
-            new_coordinator = bound_form.save()
-            return redirect(new_coordinator)
-        else:
-            context = {
-                'form': bound_form,
-                'coordinator': coordinator,
-            }
-            return render(
-                request,
-                self.template_name,
-                context)
+    # def get_object(self, pk):
+    #     return get_object_or_404(
+    #         self.model,
+    #         pk=pk)
+    #
+    # def get(self, request, pk):
+    #     coordinator = self.get_object(pk)
+    #     context = {
+    #         'form': self.form_class(
+    #             instance=coordinator),
+    #         'coordinator': coordinator,
+    #     }
+    #     return render(
+    #         request, self.template_name, context)
+    #
+    # def post(self, request, pk):
+    #     coordinator = self.get_object(pk)
+    #     bound_form = self.form_class(
+    #         request.POST, instance=coordinator)
+    #     if bound_form.is_valid():
+    #         new_coordinator = bound_form.save()
+    #         return redirect(new_coordinator)
+    #     else:
+    #         context = {
+    #             'form': bound_form,
+    #             'coordinator': coordinator,
+    #         }
+    #         return render(
+    #             request,
+    #             self.template_name,
+    #             context)
 
 
-class CoordinatorDelete(View):
-# class CoordinatorDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.delete_coordinator'
+# class CoordinatorDelete(View):
+class CoordinatorDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.delete_coordinator'
 
     def get(self, request, pk):
         coordinator = self.get_object(pk)
@@ -497,7 +507,7 @@ class CoordinatorDelete(View):
         if product_coordinators.count() > 0:
             return render(
                 request,
-                'companyinfo/coordinator_refuse_delete.html',
+                'companyinfo2/coordinator_refuse_delete.html',
                 {'coordinator': coordinator,
                  'product_coordinators': product_coordinators,
                  }
@@ -505,7 +515,7 @@ class CoordinatorDelete(View):
         else:
             return render(
                 request,
-                'companyinfo/coordinator_confirm_delete.html',
+                'companyinfo2/coordinator_confirm_delete.html',
                 {'coordinator': coordinator}
             )
 
@@ -519,24 +529,26 @@ class CoordinatorDelete(View):
     def post(self, request, pk):
         coordinator = self.get_object(pk)
         coordinator.delete()
-        return redirect('companyinfo_coordinator_list_urlpattern')
+        return redirect('companyinfo2_coordinator_list_urlpattern')
 
 
-class Product_coordinatorList(View):
-# class Product_coordinatorList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
-#     model = Product_coordinator
-#     permission_required = 'companyinfo2.view_product_coordinator'
+# class Product_coordinatorList(View):
+class Product_coordinatorList(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+    model = Product_coordinator
+    permission_required = 'companyinfo2.view_product_coordinator'
+
     def get(self, request):
         return render(
             request,
-            'companyinfo/product_coordinator_list.html',
+            'companyinfo2/product_coordinator_list.html',
             {'product_coordinator_list': Product_coordinator.objects.all()}
         )
 
 
-class Product_coordinatorDetail(View):
-# class Product_coordinatorDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
-#     permission_required = 'companyinfo2.view_product_coordinator'
+# class Product_coordinatorDetail(View):
+class Product_coordinatorDetail(LoginRequiredMixin,PermissionRequiredMixin,View):
+    permission_required = 'companyinfo2.view_product_coordinator'
+
     def get(self, request, pk):
         product_coordinator = get_object_or_404(
             Product_coordinator,
@@ -544,71 +556,71 @@ class Product_coordinatorDetail(View):
         )
         return render(
             request,
-            'companyinfo/product_coordinator_detail.html',
+            'companyinfo2/product_coordinator_detail.html',
             {'product_coordinator': product_coordinator, 'coordinator': product_coordinator.coordinator, 'product': product_coordinator.product}
         )
 
 
-# class Product_coordinatorCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
-class Product_coordinatorCreate(ObjectCreateMixin, View):
+class Product_coordinatorCreate(LoginRequiredMixin,PermissionRequiredMixin,CreateView):
+# class Product_coordinatorCreate(ObjectCreateMixin, View):
     form_class = Product_coordinatorForm
-    template_name = 'companyinfo2/product_coordinator_form.html'
+#     template_name = 'companyinfo2/product_coordinator_form.html'
 
-    # model = Product_coordinator
-    # permission_required = 'companyinfo2.add_product_coordinator'
+    model = Product_coordinator
+    permission_required = 'companyinfo2.add_product_coordinator'
 
 #
-class Product_coordinatorUpdate(View):
-# class Product_coordinatorUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
+# class Product_coordinatorUpdate(View):
+class Product_coordinatorUpdate(LoginRequiredMixin,PermissionRequiredMixin,UpdateView):
     form_class = Product_coordinatorForm
     model = Product_coordinator
     template_name = 'companyinfo2/product_coordinator_form_update.html'
-    # permission_required = 'companyinfo2.change_product_coordinator'
+    permission_required = 'companyinfo2.change_product_coordinator'
 
-    def get_object(self, pk):
-        return get_object_or_404(
-            self.model,
-            pk=pk)
+    # def get_object(self, pk):
+    #     return get_object_or_404(
+    #         self.model,
+    #         pk=pk)
+    #
+    # def get(self, request, pk):
+    #     product_coordinator = self.get_object(pk)
+    #     context = {
+    #         'form': self.form_class(
+    #             instance=product_coordinator),
+    #         'product_coordinator': product_coordinator,
+    #     }
+    #     return render(
+    #         request, self.template_name, context)
+    #
+    # def post(self, request, pk):
+    #     product_coordinator = self.get_object(pk)
+    #     bound_form = self.form_class(
+    #         request.POST, instance=product_coordinator)
+    #     if bound_form.is_valid():
+    #         new_product_coordinator = bound_form.save()
+    #         return redirect(new_product_coordinator)
+    #     else:
+    #         context = {
+    #             'form': bound_form,
+    #             'product_coordinator': product_coordinator,
+    #         }
+    #         return render(
+    #             request,
+    #             self.template_name,
+    #             context)
 
-    def get(self, request, pk):
-        product_coordinator = self.get_object(pk)
-        context = {
-            'form': self.form_class(
-                instance=product_coordinator),
-            'product_coordinator': product_coordinator,
-        }
-        return render(
-            request, self.template_name, context)
 
-    def post(self, request, pk):
-        product_coordinator = self.get_object(pk)
-        bound_form = self.form_class(
-            request.POST, instance=product_coordinator)
-        if bound_form.is_valid():
-            new_product_coordinator = bound_form.save()
-            return redirect(new_product_coordinator)
-        else:
-            context = {
-                'form': bound_form,
-                'product_coordinator': product_coordinator,
-            }
-            return render(
-                request,
-                self.template_name,
-                context)
-
-
-class Product_coordinatorDelete(View):
-# class Product_coordinatorDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
-#     model = Product_coordinator
-#     success_url = reverse_lazy('companyinfo_product_coordinator_list_urlpattern')
-#     permission_required = 'companyinfo2.delete_product_coordinator'
+# class Product_coordinatorDelete(View):
+class Product_coordinatorDelete(LoginRequiredMixin,PermissionRequiredMixin,DeleteView):
+    model = Product_coordinator
+    success_url = reverse_lazy('companyinfo2_product_coordinator_list_urlpattern')
+    permission_required = 'companyinfo2.delete_product_coordinator'
 
     def get(self, request, pk):
         product_coordinator = self.get_object(pk)
         return render(
             request,
-            'companyinfo/product_coordinator_confirm_delete.html',
+            'companyinfo2/product_coordinator_confirm_delete.html',
             {'product_coordinator': product_coordinator}
         )
     
@@ -622,7 +634,7 @@ class Product_coordinatorDelete(View):
     def post(self, request, pk):
         product_coordinator = self.get_object(pk)
         product_coordinator.delete()
-        return redirect('companyinfo_product_coordinator_list_urlpattern')
+        return redirect('companyinfo2_product_coordinator_list_urlpattern')
 
 
 
@@ -774,12 +786,10 @@ class AssemblingUpdate(View):
     template_name = 'companyinfo2/assembling_form_update.html'
     # permission_required = 'companyinfo2.change_assembling'
 
-
     def get_object(self, pk):
         return get_object_or_404(
             self.model,
             pk=pk)
-
 
     def get(self, request, pk):
         assembling = self.get_object(pk)
@@ -790,7 +800,6 @@ class AssemblingUpdate(View):
         }
         return render(
             request, self.template_name, context)
-
 
     def post(self, request, pk):
         assembling = self.get_object(pk)
@@ -821,7 +830,7 @@ class AssemblingDelete(View):
         if products.count() > 0:
             return render(
                 request,
-                'companyinfo/assembling_refuse_delete.html',
+                'companyinfo2/assembling_refuse_delete.html',
                 {'assembling': assembling,
                  'products': products,
                  }
@@ -829,7 +838,7 @@ class AssemblingDelete(View):
         else:
             return render(
                 request,
-                'companyinfo/assembling_confirm_delete.html',
+                'companyinfo2/assembling_confirm_delete.html',
                 {'assembling': assembling}
             )
 
@@ -841,4 +850,4 @@ class AssemblingDelete(View):
     def post(self, request, pk):
         assembling = self.get_object(pk)
         assembling.delete()
-        return redirect('companyinfo_assembling_list_urlpattern')
+        return redirect('companyinfo2_assembling_list_urlpattern')

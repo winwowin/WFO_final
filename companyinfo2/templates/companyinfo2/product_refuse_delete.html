@@ -1,0 +1,26 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Error Deleting Product
+{% endblock %}
+
+{% block content %}
+    <div>
+        <h2>Error Deleting Product</h2>
+        <p>
+            You may not delete product {{ product }}.  This
+            product currently has the following
+            registered coordinators:
+        </p>
+
+        <ul>
+            {% for product_coordinator in product_coordinators %}
+            <li><a href="{{ product_coordinator.get_absolute_url }}">{{ product_coordinator.coordinator }}</a></li>
+            {%  endfor %}
+        </ul>
+
+        <p>
+            Return to <a href="{% url 'companyinfo2_product_list_urlpattern' %}">Product List</a>.
+        </p>
+    </div>
+{% endblock %}

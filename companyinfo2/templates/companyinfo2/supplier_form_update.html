@@ -1,0 +1,15 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Update Supplier
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{{ supplier.get_update_url }}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Update Supplier</button>
+    </form>
+{% endblock %}

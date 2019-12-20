@@ -11,18 +11,18 @@ class Assembling(models.Model):
         return '%s, %s' % (self.assembling_code, self.assembling_line)
 
     def get_absolute_url(self):
-        return reverse('companyinfo_assembling_detail_urlpattern',
+        return reverse('companyinfo2_assembling_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_assembling_update_urlpattern',
+        return reverse('companyinfo2_assembling_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
         return reverse(
-            'companyinfo_assembling_delete_urlpattern',
+            'companyinfo2_assembling_delete_urlpattern',
             kwargs={'pk': self.pk}
         )
 
@@ -69,17 +69,17 @@ class Address(models.Model):
         return '%s - %s' % (self.address_name, self.city_name, self.state, self.country)
 
     def get_absolute_url(self):
-        return reverse('companyinfo_address_detail_urlpattern',
+        return reverse('companyinfo2_address_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_address_update_urlpattern',
+        return reverse('companyinfo2_address_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_address_delete_urlpattern',
+        return reverse('companyinfo2_address_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -111,16 +111,16 @@ class Tier(models.Model):
 #         return '%s - %s' % (self.tier, self.supplier_name, self.address)
 #
 #     def get_absolute_url(self):
-#         return reverse('companyinfo_supplier_detail_urlpattern',
+#         return reverse('companyinfo2_supplier_detail_urlpattern',
 #                        kwargs={'pk': self.pk})
 #
 #     def get_update_url(self):
-#         return reverse('companyinfo_supplier_update_urlpattern',
+#         return reverse('companyinfo2_supplier_update_urlpattern',
 #                        kwargs={'pk': self.pk}
 #                        )
 #
 #     def get_delete_url(self):
-#         return reverse('companyinfo_supplier_delete_urlpattern',
+#         return reverse('companyinfo2_supplier_delete_urlpattern',
 #                        kwargs={'pk': self.pk}
 #                        )
 #
@@ -136,16 +136,16 @@ class Supplier(models.Model):
         return '%s' % self.supplier_name
 
     def get_absolute_url(self):
-        return reverse('companyinfo_supplier_detail_urlpattern',
+        return reverse('companyinfo2_supplier_detail_urlpattern',
                        kwargs={'pk': self.pk})
 
     def get_update_url(self):
-        return reverse('companyinfo_supplier_update_urlpattern',
+        return reverse('companyinfo2_supplier_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_supplier_delete_urlpattern',
+        return reverse('companyinfo2_supplier_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -162,16 +162,16 @@ class Part(models.Model):
         return '%s - %s' % (self.part_number, self.part_name)
 
     def get_absolute_url(self):
-        return reverse('companyinfo_part_detail_urlpattern',
+        return reverse('companyinfo2_part_detail_urlpattern',
                        kwargs={'pk': self.pk})
 
     def get_update_url(self):
-        return reverse('companyinfo_part_update_urlpattern',
+        return reverse('companyinfo2_part_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_part_delete_urlpattern',
+        return reverse('companyinfo2_part_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -195,17 +195,17 @@ class Coordinator(models.Model):
         return result
 
     def get_absolute_url(self):
-        return reverse('companyinfo_coordinator_detail_urlpattern',
+        return reverse('companyinfo2_coordinator_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_coordinator_update_urlpattern',
+        return reverse('companyinfo2_coordinator_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_coordinator_delete_urlpattern',
+        return reverse('companyinfo2_coordinator_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -225,17 +225,17 @@ class Product(models.Model):
         return '%s - %s (%s)' % (self.part.part_number, self.product_name, self.supplier.__str__())
 
     def get_absolute_url(self):
-        return reverse('companyinfo_product_detail_urlpattern',
+        return reverse('companyinfo2_product_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_product_update_urlpattern',
+        return reverse('companyinfo2_product_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_product_delete_urlpattern',
+        return reverse('companyinfo2_product_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -253,17 +253,17 @@ class Product_coordinator(models.Model):
         return '%s / %s' % (self.product, self.coordinator)
 
     def get_absolute_url(self):
-        return reverse('companyinfo_product_coordinator_detail_urlpattern',
+        return reverse('companyinfo2_product_coordinator_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_product_coordinator_update_urlpattern',
+        return reverse('companyinfo2_product_coordinator_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_product_coordinator_delete_urlpattern',
+        return reverse('companyinfo2_product_coordinator_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
@@ -283,17 +283,17 @@ class Billing(models.Model):
         return '%s %s - %s' % (self.supplier.supplier_id, self.supplier.supplier_name, self.billing_number)
 
     def get_absolute_url(self):
-        return reverse('companyinfo_billing_detail_urlpattern',
+        return reverse('companyinfo2_billing_detail_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_update_url(self):
-        return reverse('companyinfo_billing_update_urlpattern',
+        return reverse('companyinfo2_billing_update_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 
     def get_delete_url(self):
-        return reverse('companyinfo_billing_delete_urlpattern',
+        return reverse('companyinfo2_billing_delete_urlpattern',
                        kwargs={'pk': self.pk}
                        )
 

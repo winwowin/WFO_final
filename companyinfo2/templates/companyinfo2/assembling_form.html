@@ -1,0 +1,15 @@
+{% extends 'companyinfo2/base.html' %}
+
+{% block title %}
+    Create Assembling
+{% endblock %}
+
+{% block content %}
+    <form
+        action="{% url 'companyinfo2_assembling_create_urlpattern'%}"
+        method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Create Assembling</button>
+    </form>
+{% endblock %}
