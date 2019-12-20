@@ -216,7 +216,7 @@ class Coordinator(models.Model):
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
-    product_name = models.CharField(max_length=10)
+    product_name = models.CharField(max_length=45)
     supplier = models.ForeignKey(Supplier, related_name='products', on_delete=models.PROTECT)
     part = models.ForeignKey(Part, related_name='products', on_delete=models.PROTECT)
     assembling = models.ForeignKey(Assembling, related_name='products', on_delete=models.PROTECT)
