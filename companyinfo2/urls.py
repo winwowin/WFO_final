@@ -131,6 +131,12 @@ from .views import (
     Product_coordinatorCreate,
     Product_coordinatorUpdate,
     Product_coordinatorDelete,
+    # AddressCreate,
+    # AddressUpdate,
+    # AddressDelete,
+    # BillingCreate,
+    # BillingUpdate,
+    # BillingDelete,
 )
 
 urlpatterns = [

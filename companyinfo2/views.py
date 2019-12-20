@@ -809,12 +809,12 @@ class AssemblingUpdate(View):
                 self.template_name,
                 context)
 
-#
+
 class AssemblingDelete(View):
 
 # class AssemblingDelete(LoginRequiredMixin,PermissionRequiredMixin,View):
 #     permission_required = 'companyinfo2.delete_assembling'
-#
+
     def get(self, request, pk):
         assembling = self.get_object(pk)
         products = assembling.products.all()
@@ -842,49 +842,3 @@ class AssemblingDelete(View):
         assembling = self.get_object(pk)
         assembling.delete()
         return redirect('companyinfo_assembling_list_urlpattern')
-
-#
-
-#
-#
-
-
-#
-
-#
-#
-#
-#
-
-#
-#
-
-#
-
-#
-#
-#
-#
-
-#
-#
-
-#
-#
-#
-#
-#
-#
-
-#
-
-
-#
-#
-#
-
-#
-#
-
-
-#

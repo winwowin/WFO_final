@@ -55,7 +55,7 @@ ROOT_URLCONF = 'Chaiyakunapruk_Worawich_final_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'companyinfo2/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
