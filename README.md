@@ -7,7 +7,7 @@ To view the full system management functions, please log in using superuser cred
 <br>Log-in id: tester
 <br>Password: (secret)      
 
-The followings are the authenticated employee IDs have the same password: (secret)
+The followings are the authenticated employee IDs with the same password: (secret)
 Please see the group permission for each role in [domain]/admin/auth/group
 accountant
 - hr
