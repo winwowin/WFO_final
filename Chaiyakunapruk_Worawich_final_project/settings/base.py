@@ -27,7 +27,7 @@ SECRET_KEY = 'hrofn)vjqq0qlatsd=j8ha)f5g7u*e+b-$-2r^a6pu!uyapb#f'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['winwowin.pythonanywhere.com']
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -57,7 +57,7 @@ ROOT_URLCONF = 'Chaiyakunapruk_Worawich_final_project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'companyinfo2/templates')]
+        'DIRS': [os.path.join(BASE_DIR, 'companyinfo2/../../companyinfo2/templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'Chaiyakunapruk_Worawich_final_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, '../db.sqlite3'),
     }
 }
 
@@ -122,7 +122,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, '../static')
 
 LOGIN_REDIRECT_URL = 'about_urlpattern'
 
