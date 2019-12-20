@@ -1,6 +1,9 @@
 # Web Framework Development project
 The EZ Company is a full-featured Web-based demonstration application for the creation and maintenance of a simplified company system database. The application is implemented using Django. The web system contains customer view and employee view via log-in authentication. Each employee role has different read/write access to the database.  
 
+## Demo
+http://winwowin.pythonanywhere.com/
+
 ## Usage
 
 To view the full system management functions, please log in using superuser credential.<br>
